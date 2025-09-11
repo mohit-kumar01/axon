@@ -1,0 +1,10 @@
+INFO:     Started server process [60706]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:39582 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55806 - "GET / HTTP/1.1" 200 OK
+Placeholder: Detecting RMM patterns...
+INFO:     127.0.0.1:55808 - "POST /analyze/url HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55816 - "OPTIONS /analyze/url HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43170 - "GET /health HTTP/1.1" 404 Not Found

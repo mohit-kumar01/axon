@@ -1,0 +1,4 @@
+This file ensures that Git handles file types correctly across different operating systems.
+Treat all shell scripts (.sh) as text and enforce Linux-style line endings (LF).
+This is critical for scripts that will be run inside Linux Docker containers.
+*.sh text eol=lf

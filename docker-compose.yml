@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  file_scanner:
+    build: ./backend
+    ports:
+      - "8001:8000" # Changed host port to 8001
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./.env
+
+  url_scanner:
+    build: ./url_scanner
+    ports:
+      - "8002:8000" # Host port 8002 for the new service
+    volumes:
+      - ./url_scanner:/app
+    env_file:
+      - ./.env

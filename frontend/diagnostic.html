@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend-Backend Integration Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Frontend-Backend Integration Diagnosis</h1>
+    
+    <div id="status">
+        <h2>Service Status</h2>
+        <div id="service-status"></div>
+    </div>
+    
+    <button onclick="runDiagnostics()">🚀 Run Full Diagnostics</button>
+    <button onclick="testLogin()">🔐 Test Login Flow</button>
+    <button onclick="testDashboard()">📊 Test Dashboard</button>
+    
+    <div id="results"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8001/api';
+        const FRONTEND_BASE = 'http://localhost:8080';
+        
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong> - ${message}`;
+            results.appendChild(div);
+            console.log(`[${type.toUpperCase()}]`, message);
+        }
+        
+        async function testEndpoint(endpoint, description) {
+            const url = `${API_BASE}${endpoint}`;
+            log(`Testing: ${description} (${url})`, 'info');
+            
+            try {
+                const startTime = performance.now();
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': FRONTEND_BASE
+                    },
+                    mode: 'cors'
+                });
+                
+                const endTime = performance.now();
+                const duration = Math.round(endTime - startTime);
+                
+                log(`Response Status: ${response.status} ${response.statusText} (${duration}ms)`, 'info');
+                
+                // Log response headers
+                const corsHeaders = {};
+                for (const [key, value] of response.headers.entries()) {
+                    if (key.toLowerCase().includes('access-control')) {
+                        corsHeaders[key] = value;
+                    }
+                }
+                log(`CORS Headers: ${JSON.stringify(corsHeaders, null, 2)}`, 'info');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ SUCCESS: ${description}`, 'success');
+                    log(`<pre>${JSON.stringify(data, null, 2)}</pre>`, 'info');
+                    return { success: true, data };
+                } else {
+                    const errorText = await response.text();
+                    log(`❌ HTTP ERROR: ${response.status} - ${errorText}`, 'error');
+                    return { success: false, error: `HTTP ${response.status}` };
+                }
+            } catch (error) {
+                log(`❌ NETWORK ERROR: ${error.message}`, 'error');
+                log(`Error details: ${error.stack}`, 'error');
+                return { success: false, error: error.message };
+            }
+        }
+        
+        async function testServiceAvailability() {
+            log('🔍 Checking service availability...', 'info');
+            
+            // Test direct API access
+            const endpoints = [
+                { url: 'http://localhost:8001/api/dashboard/stats', name: 'Main API (8001)' },
+                { url: 'http://localhost:8002/health', name: 'URL Scanner (8002)' },
+                { url: 'http://localhost:8080', name: 'Frontend (8080)' }
+            ];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint.url);
+                    if (response.ok) {
+                        log(`✅ ${endpoint.name} is accessible`, 'success');
+                    } else {
+                        log(`⚠️ ${endpoint.name} returned ${response.status}`, 'error');
+                    }
+                } catch (error) {
+                    log(`❌ ${endpoint.name} is not accessible: ${error.message}`, 'error');
+                }
+            }
+        }
+        
+        async function runDiagnostics() {
+            document.getElementById('results').innerHTML = '';
+            log('🚀 Starting comprehensive diagnostics...', 'info');
+            
+            await testServiceAvailability();
+            
+            // Test API endpoints
+            const apiTests = [
+                { endpoint: '/dashboard/stats', description: 'Dashboard Statistics' },
+                { endpoint: '/dashboard/recent-activity', description: 'Recent Activity' },
+                { endpoint: '/email/recent', description: 'Recent Email Scans' },
+                { endpoint: '/file/recent', description: 'Recent File Scans' }
+            ];
+            
+            for (const test of apiTests) {
+                await testEndpoint(test.endpoint, test.description);
+            }
+            
+            log('🏁 Diagnostics complete!', 'success');
+        }
+        
+        async function testLogin() {
+            log('🔐 Testing login flow...', 'info');
+            
+            // Simulate login attempt
+            const loginData = {
+                username: 'admin',
+                password: 'admin123'
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': FRONTEND_BASE
+                    },
+                    mode: 'cors',
+                    body: JSON.stringify(loginData)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log('✅ Login endpoint responded successfully', 'success');
+                    log(`<pre>${JSON.stringify(data, null, 2)}</pre>`, 'info');
+                } else {
+                    log(`⚠️ Login endpoint returned ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Login request failed: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testDashboard() {
+            log('📊 Testing dashboard data loading...', 'info');
+            
+            // Simulate the exact requests the frontend makes
+            const dashboardRequests = [
+                '/dashboard/stats',
+                '/dashboard/recent-activity?limit=10',
+                '/dashboard/threat-trends?days=7'
+            ];
+            
+            for (const endpoint of dashboardRequests) {
+                await testEndpoint(endpoint, `Dashboard: ${endpoint}`);
+            }
+        }
+        
+        // Auto-run diagnostics when page loads
+        window.addEventListener('load', () => {
+            setTimeout(runDiagnostics, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXON - Advanced Security Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="login-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                    
+                <span>AXON</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#dashboard" class="nav-link active">Dashboard</a></li>
+                <li><a href="#email-scanner" class="nav-link">Email Scanner</a></li>
+                <li><a href="#file-scanner" class="nav-link">File Scanner</a></li>
+                <li><a href="#threat-intel" class="nav-link">Threat Intel</a></li>
+                <!-- <li><a href="#settings" class="nav-link">Settings</a></li> -->
+            </ul>
+            <div class="nav-controls">
+                <div class="profile-dropdown">
+                    <button class="profile-btn" id="profileBtn">
+                        <img src="" alt="Profile" id="navProfilePic" style="display: none;">
+                        <i class="fas fa-user" id="navProfileIcon"></i>
+                    </button>
+                    <div class="profile-menu" id="profileMenu">
+                        <a href="#profile" class="profile-menu-item">
+                            <i class="fas fa-user"></i>
+                            Your Profile
+                        </a>
+                        <a href="#settings" class="profile-menu-item">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                        <a href="#logout" class="profile-menu-item logout-option">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Log Out
+                        </a>
+                    </div>
+                </div>
+                <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Login Section -->
+        <section id="login" class="section active">
+            <div class="login-container">
+                <div class="login-box">
+                    <div class="login-header">
+                        <div class="login-logo">
+                            <img src="./assets/axon.jpeg" alt="logo">
+                            <h2>AXON</h2>
+                        </div>
+                        <div class="auth-controls">
+                            <button class="theme-toggle-login" id="theme-toggle-login" title="Toggle dark/light mode">
+                                <i class="fas fa-moon"></i>
+                            </button> 
+                        </div>
+                        <p id="auth-subtitle">Sign in to your account</p>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <form class="auth-form" id="loginForm">
+                        <div class="form-group">
+                            <label for="loginIdentifier">Email Address or Username</label>
+                            <input type="text" id="loginIdentifier" name="loginIdentifier" required 
+                                   placeholder="Enter your email or username">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <div class="password-input-container">
+                                <input type="password" id="loginPassword" name="loginPassword" required 
+                                       placeholder="Enter your password">
+                                <button type="button" class="password-toggle" id="loginPasswordToggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="remember" name="remember">
+                                <span class="checkmark"></span>
+                                Remember me
+                            </label>
+                        </div>
+                        <button type="submit" class="auth-btn">Sign In</button>
+                        <div class="auth-footer">
+                            <a href="#forgot-password" class="forgot-link">Forgot your password?</a>
+                            <p>Don't have an account? <a href="#signup" class="switch-auth-link" id="showSignup">Sign up</a></p>
+                        </div>
+                    </form>
+
+                    <!-- Signup Form -->
+                    <form class="auth-form" id="signupForm" style="display: none;">
+                        <div class="form-group">
+                            <!-- <label for="profilePic">Profile Picture</label>
+                            <div class="profile-pic-upload">
+                                <div class="profile-pic-preview" id="profilePicPreview">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <input type="file" id="profilePic" name="profilePic" accept="image/*" style="display: none;">
+                                <button type="button" class="upload-btn" onclick="document.getElementById('profilePic').click()">
+                                    <i class="fas fa-camera"></i>
+                                    Choose Photo
+                                </button>
+                            </div> -->
+                        </div>
+                        <div class="form-group">
+                            <label for="signupUsername">Username/User ID</label>
+                            <input type="text" id="signupUsername" name="signupUsername" required 
+                                   placeholder="Choose a username">
+                        </div>
+                        <div class="form-group">
+                            <label for="signupEmail">Email Address</label>
+                            <input type="email" id="signupEmail" name="signupEmail" required 
+                                   placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="signupPassword">Create Password</label>
+                            <div class="password-input-container">
+                                <input type="password" id="signupPassword" name="signupPassword" required 
+                                       placeholder="Create a strong password">
+                                <button type="button" class="password-toggle" id="signupPasswordToggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-criteria" id="passwordCriteria">
+                                <div class="criteria-item" data-criterion="length">
+                                    <i class="fas fa-times"></i>
+                                    <span>At least 8 characters</span>
+                                </div>
+                                <div class="criteria-item" data-criterion="uppercase">
+                                    <i class="fas fa-times"></i>
+                                    <span>One uppercase letter</span>
+                                </div>
+                                <div class="criteria-item" data-criterion="lowercase">
+                                    <i class="fas fa-times"></i>
+                                    <span>One lowercase letter</span>
+                                </div>
+                                <div class="criteria-item" data-criterion="special">
+                                    <i class="fas fa-times"></i>
+                                    <span>One special symbol</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <div class="password-input-container">
+                                <input type="password" id="confirmPassword" name="confirmPassword" required 
+                                       placeholder="Confirm your password">
+                                <button type="button" class="password-toggle" id="confirmPasswordToggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" class="auth-btn">Sign Up</button>
+                        <div class="auth-footer">
+                            <p>Already have an account? <a href="#login" class="switch-auth-link" id="showLogin">Sign in</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section">
+            <div class="container">
+                <h1 class="section-title">Your Profile</h1>
+                
+                <div class="profile-container">
+                    <div class="profile-form-container">
+                        <form id="profile-form" class="profile-form">
+                            <!-- Profile Picture Section -->
+                            <div class="profile-pic-section">
+                                <div class="profile-pic-large" id="profilePicLarge">
+                                    <img src="" alt="Profile" id="profileImageLarge" style="display: none;">
+                                    <i class="fas fa-user" id="profileIconLarge"></i>
+                                </div>
+                                <div class="profile-pic-controls">
+                                    <input type="file" id="profilePicEdit" name="profilePicEdit" accept="image/*" style="display: none;">
+                                    <button type="button" class="upload-profile-btn" onclick="document.getElementById('profilePicEdit').click()">
+                                        <i class="fas fa-camera"></i>
+                                        Edit Photo
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Profile Information -->
+                            <div class="profile-info-section">
+                                <div class="form-group">
+                                    <label for="profileUsername">Username/User ID</label>
+                                    <input type="text" id="profileUsername" name="profileUsername" 
+                                           placeholder="Your username">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="profileEmail">Email Address</label>
+                                    <input type="email" id="profileEmail" name="profileEmail" 
+                                           placeholder="Your email address">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="currentPassword">Current Password</label>
+                                    <div class="password-input-container">
+                                        <input type="password" id="currentPassword" name="currentPassword" 
+                                               placeholder="Enter current password">
+                                        <button type="button" class="password-toggle" id="currentPasswordToggle">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <div class="password-input-container">
+                                        <input type="password" id="newPassword" name="newPassword" 
+                                               placeholder="Enter new password">
+                                        <button type="button" class="password-toggle" id="newPasswordToggle">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="password-criteria" id="profilePasswordCriteria">
+                                        <div class="criteria-item" data-criterion="length">
+                                            <i class="fas fa-times"></i>
+                                            <span>At least 8 characters</span>
+                                        </div>
+                                        <div class="criteria-item" data-criterion="uppercase">
+                                            <i class="fas fa-times"></i>
+                                            <span>One uppercase letter</span>
+                                        </div>
+                                        <div class="criteria-item" data-criterion="lowercase">
+                                            <i class="fas fa-times"></i>
+                                            <span>One lowercase letter</span>
+                                        </div>
+                                        <div class="criteria-item" data-criterion="special">
+                                            <i class="fas fa-times"></i>
+                                            <span>One special symbol</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="confirmNewPassword">Confirm New Password</label>
+                                    <div class="password-input-container">
+                                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" 
+                                               placeholder="Confirm new password">
+                                        <button type="button" class="password-toggle" id="confirmNewPasswordToggle">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-actions">
+                                    <button type="submit" class="save-profile-btn">
+                                        <i class="fas fa-save"></i>
+                                        Save Changes
+                                    </button>
+                                    <button type="button" class="cancel-profile-btn" id="cancelProfile">
+                                        <i class="fas fa-times"></i>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <div class="container">
+                <h1 class="section-title">Security Dashboard</h1>
+                
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-email-scans">0</h3>
+                            <p>Email Scans</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-file-scans">0</h3>
+                            <p>File Scans</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon threat">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="phishing-detected">0</h3>
+                            <p>Phishing Detected</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon malware">
+                            <i class="fas fa-virus"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="malware-detected">0</h3>
+                            <p>Malware Detected</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Activity -->
+                <div class="dashboard-grid">
+                    <div class="chart-container">
+                        <h3>Threat Detection Trends</h3>
+                        <canvas id="threatChart"></canvas>
+                    </div>
+                    
+                    <div class="activity-container">
+                        <h3>Recent Activity</h3>
+                        <div id="recent-activity" class="activity-list">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Health -->
+                <div class="health-container">
+                    <h3>System Health</h3>
+                    <div class="health-grid">
+                        <div class="health-item">
+                            <span>Email Scanner</span>
+                            <div class="status-indicator running"></div>
+                        </div>
+                        <div class="health-item">
+                            <span>File Scanner</span>
+                            <div class="status-indicator running"></div>
+                        </div>
+                        <div class="health-item">
+                            <span>Database</span>
+                            <div class="status-indicator running"></div>
+                        </div>
+                        <div class="health-item">
+                            <span>API Server</span>
+                            <div class="status-indicator running"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Email Scanner Section -->
+        <section id="email-scanner" class="section">
+            <div class="container">
+                <h1 class="section-title">Email Security Scanner</h1>
+                
+                <div class="scanner-grid">
+                    <div class="scan-form-container">
+                        <h3>Scan Email for Phishing</h3>
+                        <form id="email-scan-form" class="scan-form">
+                            <div class="form-group">
+                                <label for="sender-email">Sender Email</label>
+                                <input type="email" id="sender-email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email-subject">Subject</label>
+                                <input type="text" id="email-subject" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email-body">Email Body</label>
+                                <textarea id="email-body" rows="8" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="scan-btn">
+                                <i class="fas fa-search"></i>
+                                Scan Email
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="results-container">
+                        <h3>Scan Results</h3>
+                        <div id="email-results" class="results-content">
+                            <p class="no-results">Submit an email to see scan results</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Email Scans -->
+                <div class="recent-scans">
+                    <h3>Recent Email Scans</h3>
+                    <div id="recent-email-scans" class="scans-table">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- File Scanner Section -->
+        <section id="file-scanner" class="section">
+            <div class="container">
+                <h1 class="section-title">File Security Scanner</h1>
+                
+                <div class="scanner-grid">
+                    <div class="scan-form-container">
+                        <h3>Scan File for Malware</h3>
+                        <div class="file-upload-area" id="file-upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag and drop files here or click to browse</p>
+                            <input type="file" id="file-input" multiple accept="*/*">
+                            <button type="button" class="browse-btn">Browse Files</button>
+                        </div>
+                        
+                        <div id="file-list" class="file-list">
+                            <!-- Selected files will appear here -->
+                        </div>
+                        
+                        <button id="scan-files-btn" class="scan-btn" disabled>
+                            <i class="fas fa-search"></i>
+                            Scan Files
+                        </button>
+                    </div>
+                    
+                    <div class="results-container">
+                        <h3>Scan Results</h3>
+                        <div id="file-results" class="results-content">
+                            <p class="no-results">Upload files to see scan results</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent File Scans -->
+                <div class="recent-scans">
+                    <h3>Recent File Scans</h3>
+                    <div id="recent-file-scans" class="scans-table">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Threat Intelligence Section -->
+        <section id="threat-intel" class="section">
+            <div class="container">
+                <h1 class="section-title">Threat Intelligence</h1>
+                
+                <div class="threat-grid">
+                    <div class="top-threats">
+                        <h3>Top Threats</h3>
+                        <div id="top-threats-list" class="threats-list">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                    
+                    <div class="threat-map">
+                        <h3>Threat Map</h3>
+                        <div class="map-placeholder">
+                            <i class="fas fa-globe"></i>
+                            <p>Interactive threat map coming soon</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IOC Search -->
+                <div class="ioc-search">
+                    <h3>IOC Lookup</h3>
+                    <div class="search-container">
+                        <input type="text" id="ioc-input" placeholder="Enter hash, domain, or IP address">
+                        <button id="ioc-search-btn" class="search-btn">
+                            <i class="fas fa-search"></i>
+                            Search
+                        </button>
+                    </div>
+                    <div id="ioc-results" class="ioc-results">
+                        <!-- Search results will appear here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="section">
+            <div class="container">
+                <h1 class="section-title">Settings</h1>
+                
+                <div class="settings-grid">
+                    <div class="settings-group">
+                        <h3>Email Configuration</h3>
+                        <form id="email-config-form">
+                            <div class="form-group">
+                                <label for="imap-server">IMAP Server</label>
+                                <input type="text" id="imap-server" placeholder="imap.gmail.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="imap-port">Port</label>
+                                <input type="number" id="imap-port" value="993">
+                            </div>
+                            <div class="form-group">
+                                <label for="email-username">Username</label>
+                                <input type="email" id="email-username">
+                            </div>
+                            <div class="form-group">
+                                <label for="email-password">Password</label>
+                                <input type="password" id="email-password">
+                            </div>
+                            <button type="submit" class="save-btn">Save Configuration</button>
+                        </form>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3>Scan Settings</h3>
+                        <form id="scan-settings-form">
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="auto-scan-emails" checked>
+                                    Auto-scan incoming emails
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="real-time-protection" checked>
+                                    Real-time file protection
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="scan-sensitivity">Scan Sensitivity</label>
+                                <select id="scan-sensitivity">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="save-btn">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Scanning in progress...</p>
+    </div>
+
+    <!-- Alert Modal -->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="alert-title"></h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="alert-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="alert-ok" class="btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts - Optimized Loading -->
+    <script>
+        // Critical inline script for faster initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading screen after critical content loads
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    loadingScreen.style.transition = 'opacity 0.3s';
+                    setTimeout(() => loadingScreen.remove(), 300);
+                }
+            }, 500);
+            
+            // Lazy load external resources
+            loadExternalResources();
+        });
+        
+        function loadExternalResources() {
+            // Load Font Awesome lazily
+            const fontAwesome = document.createElement('link');
+            fontAwesome.rel = 'stylesheet';
+            fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+            document.head.appendChild(fontAwesome);
+            
+            // Load Google Fonts lazily
+            const googleFonts = document.createElement('link');
+            googleFonts.rel = 'stylesheet';
+            googleFonts.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap';
+            document.head.appendChild(googleFonts);
+            
+            // Load Chart.js lazily when needed
+            window.loadChartJS = function() {
+                return new Promise((resolve) => {
+                    if (window.Chart) {
+                        resolve();
+                        return;
+                    }
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                    script.onload = resolve;
+                    document.head.appendChild(script);
+                });
+            };
+        }
+    </script>
+    
+    <!-- Password Mismatch Popup -->
+    <div id="passwordMismatchPopup" class="password-mismatch-popup">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Passwords do not match</span>
+    </div>
+    
+        <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/email-scanner.js"></script>
+    <script src="js/file-scanner.js"></script>
+    <script src="js/threat-intel.js"></script>
+</body>
+</html>
+    <script src="js/threat-intel.js"></script>
+</body>
+</html>

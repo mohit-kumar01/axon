@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  clamav:
+    image: clamav/clamav:stable
+    container_name: clamav_container
+    ports:
+      - "3310:3310"
+    volumes:
+      - clamav_db:/var/lib/clamav
+    restart: unless-stopped
+
+volumes:
+  clamav_db:
+    driver: local

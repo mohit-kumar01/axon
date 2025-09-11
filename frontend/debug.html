@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug API Calls</title>
+</head>
+<body>
+    <h1>Debug API Calls</h1>
+    <button id="testBtn">Test API Call</button>
+    <div id="output"></div>
+
+    <script>
+        const apiBase = 'http://localhost:8001/api';
+        
+        async function testApiCall() {
+            const output = document.getElementById('output');
+            output.innerHTML = '<h3>Testing API Calls:</h3>';
+            
+            // Test different endpoints
+            const endpoints = [
+                '/dashboard/stats',
+                '/email/recent',
+                '/file/recent'
+            ];
+            
+            for (const endpoint of endpoints) {
+                const fullUrl = apiBase + endpoint;
+                output.innerHTML += `<p><strong>Testing:</strong> ${fullUrl}</p>`;
+                
+                try {
+                    console.log('Making request to:', fullUrl);
+                    const response = await fetch(fullUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        mode: 'cors'
+                    });
+                    
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', [...response.headers.entries()]);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        output.innerHTML += `<p style="color: green;">✓ Success: ${JSON.stringify(data).substring(0, 100)}...</p>`;
+                    } else {
+                        output.innerHTML += `<p style="color: red;">✗ Failed: ${response.status} ${response.statusText}</p>`;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    output.innerHTML += `<p style="color: red;">✗ Error: ${error.message}</p>`;
+                }
+            }
+        }
+        
+        document.getElementById('testBtn').addEventListener('click', testApiCall);
+    </script>
+</body>
+</html>
